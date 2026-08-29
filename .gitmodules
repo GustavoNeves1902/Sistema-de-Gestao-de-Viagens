@@ -4,3 +4,9 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/DavieduN/Sistema-de-Gestao-de-Viagens-Frontend.git
+[submodule "Sistema-de-Gestao-de-Viagens-API-Docs"]
+	path = Sistema-de-Gestao-de-Viagens-API-Docs
+	url = https://github.com/DyogoBendo/Sistema-de-Gestao-de-Viagens-API-Docs
+[submodule "api-docs"]
+	path = api-docs
+	url = https://github.com/DyogoBendo/Sistema-de-Gestao-de-Viagens-API-Docs
