@@ -1,0 +1,67 @@
+@startuml
+' Diagrama de Casos de Uso — Planejamento de Viagem (versão 1.0)
+' Sistema de Gestão de Viagens (SGV) — Engenharia de Software II — UNIOESTE
+' Fonte editável equivalente ao arquivo .svg / .png entregue nesta pasta.
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam actor {
+  BorderColor #0F172A
+  BackgroundColor #FFFFFF
+}
+skinparam usecase {
+  BorderColor #2563EB
+  BackgroundColor #EFF6FF
+  FontColor #1E3A8A
+}
+skinparam rectangle {
+  BorderColor #94A3B8
+  BackgroundColor #FFFFFF
+}
+
+left to right direction
+
+actor "Usuário" as Usuario
+actor Colaborador as Colab
+actor Gestor as Gestor
+
+Colab --|> Usuario
+Gestor --|> Usuario
+
+rectangle "Sistema de Gestão de Viagens (SGV)\nMódulo Planejamento de Viagem" {
+  usecase "UC01\nAutenticar Usuário"                as UC01 #F8FAFC
+  usecase "UC02\nManter Viagem"                     as UC02
+  usecase "UC03\nSubmeter Viagem\npara Análise"     as UC03 #F8FAFC
+  usecase "UC04\nPesquisar Viagens"                 as UC04 #F8FAFC
+  usecase "UC05\nConsultar Viagem"                  as UC05
+  usecase "UC06\nConsultar Histórico\nde Situações" as UC06 #F8FAFC
+  usecase "UC07\nRegistrar Histórico\nde Situação"  as UC07 #F5F3FF
+}
+
+Usuario -- UC01
+Usuario -- UC04
+Usuario -- UC05
+Usuario -- UC06
+
+Colab -- UC02
+Colab -- UC03
+
+UC02 ..> UC07 : <<include>>
+UC03 ..> UC07 : <<include>>
+
+note bottom of UC07
+  Todos os casos de uso acima estão especificados
+  na versão 1.0 deste documento.
+  Fundo azul (UC02, UC05): implementado na Sprint 1
+  pelas User Stories 1 a 4.
+  Fundo cinza: implementação prevista para a Sprint 2.
+
+  Em outros documentos: Aprovar / Rejeitar Viagem,
+  Manter Despesa, Consultar Resumo Financeiro
+  e Visualizar Painel Gerencial.
+end note
+
+@enduml
