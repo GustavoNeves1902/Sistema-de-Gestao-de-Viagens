@@ -32,13 +32,16 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - api
-    restart: unless-stopped
+      build:
+        context: ./frontend
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./frontend:/app
+        - /app/node_modules
+      depends_on:
+        - api
+      restart: unless-stopped
 
 volumes:
   pgdata:
