@@ -1,9 +1,34 @@
+version: '3.8'
+
 services:
+  db:
+    image: postgres:16-alpine
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
   api:
     build:
       context: ./api
     ports:
       - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      # Conectando com o usuário master localmente até que os scripts de role (APP_USER) sejam criados
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRESQL_DATABASE}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRESQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRESQL_PASSWORD}
+    depends_on:
+      - db
     restart: unless-stopped
 
   frontend:
@@ -11,6 +36,9 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
-    restart: unless-stopped
     depends_on:
       - api
+    restart: unless-stopped
+
+volumes:
+  pgdata:
