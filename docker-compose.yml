@@ -2,18 +2,24 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:16-alpine
-    env_file:
-      - .env
-    environment:
-      POSTGRES_DB: ${POSTGRESQL_DATABASE}
-      POSTGRES_USER: ${POSTGRESQL_USER}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    image: postgres:16
+    restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=${POSTGRESQL_USER}
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=${POSTGRESQL_DATABASE}
+      - APP_USER=${APP_USER}
+      - APP_PASSWORD=${APP_PASSWORD}
+      - REPORT_USER=${REPORT_USER}
+      - REPORT_PASSWORD=${REPORT_PASSWORD}
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    restart: unless-stopped
+      - type: volume
+        source: pgdata-viagem
+        target: /var/lib/postgresql/data
+      - ./init-roles.sh:/docker-entrypoint-initdb.d/init-roles.sh:ro
 
   api:
     build:
@@ -23,10 +29,10 @@ services:
     env_file:
       - .env
     environment:
-      # Conectando com o usuário master localmente até que os scripts de role (APP_USER) sejam criados
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRESQL_DATABASE}
-      - SPRING_DATASOURCE_USERNAME=${POSTGRESQL_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRESQL_PASSWORD}
+      - DB_HOST=db
+      - DB_DATABASE=${POSTGRESQL_DATABASE}
+      - DB_USER=${APP_USER}
+      - DB_PASSWORD=${APP_PASSWORD}
     depends_on:
       - db
     restart: unless-stopped
@@ -44,4 +50,4 @@ services:
       restart: unless-stopped
 
 volumes:
-  pgdata:
+  pgdata-viagem:
