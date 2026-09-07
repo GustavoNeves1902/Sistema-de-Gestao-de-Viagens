@@ -1,0 +1,83 @@
+@startuml
+' Diagrama de Casos de Uso — Planejamento de Viagem (versão 1.3)
+' Sistema de Gestão de Viagens (SGV) — Engenharia de Software II — UNIOESTE
+' Fonte editável equivalente ao arquivo .svg / .png entregue nesta pasta.
+' v1.1: removido o ator generalizado «Usuário»; Colaborador e Gestor passam a
+'       se ligar diretamente aos casos de uso, sem relacionamento de herança.
+' v1.2: acrescentado o UC08 — Aprovar Viagem (ator Gestor), que cobre a decisão
+'       de aprovação e de rejeição prevista na seção 4 da especificação do cliente.
+' v1.3: nomes alinhados ao documento de User Stories (US.1 a US.8): o UC03 passa a
+'       chamar-se «Submeter Viagem para Aprovação» e o UC06, «Consultar Histórico
+'       de Situações». A rejeição passa a ser terminal, sem reenvio (US.3 a US.5).
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #475569
+skinparam actor {
+  BorderColor #0F172A
+  BackgroundColor #FFFFFF
+}
+skinparam usecase {
+  BorderColor #2563EB
+  BackgroundColor #EFF6FF
+  FontColor #1E3A8A
+}
+skinparam rectangle {
+  BorderColor #94A3B8
+  BackgroundColor #FFFFFF
+}
+
+left to right direction
+
+actor Colaborador as Colab
+actor Gestor as Gestor
+
+rectangle "Sistema de Gestão de Viagens (SGV)\nMódulo Planejamento de Viagem" {
+  usecase "UC01\nAutenticar Usuário"                as UC01 #F8FAFC
+  usecase "UC02\nManter Viagem"                     as UC02
+  usecase "UC03\nSubmeter Viagem\npara Aprovação"   as UC03 #F8FAFC
+  usecase "UC04\nPesquisar Viagens"                 as UC04 #F8FAFC
+  usecase "UC05\nConsultar Viagem"                  as UC05
+  usecase "UC06\nConsultar Histórico\nde Situações" as UC06 #F8FAFC
+  usecase "UC07\nRegistrar Histórico\nde Situação"  as UC07 #F5F3FF
+  usecase "UC08\nAprovar Viagem"                    as UC08 #F8FAFC
+}
+
+Colab -- UC01
+Colab -- UC02
+Colab -- UC03
+Colab -- UC04
+Colab -- UC05
+Colab -- UC06
+
+Gestor -- UC01
+Gestor -- UC04
+Gestor -- UC05
+Gestor -- UC06
+Gestor -- UC08
+
+UC02 ..> UC07 : <<include>>
+UC03 ..> UC07 : <<include>>
+UC08 ..> UC07 : <<include>>
+
+note bottom of UC07
+  Todos os casos de uso acima estão especificados
+  nesta versão do documento.
+  Fundo azul (UC02, UC05): implementado na Sprint 1
+  pelas User Stories 1 a 4.
+  Fundo cinza: implementação prevista para a Sprint 2.
+
+  O UC08 cobre a decisão do gestor nos dois cenários:
+  aprovar (US.6) e rejeitar com justificativa (US.7).
+  O Gestor não mantém nem submete viagens — essas
+  atribuições são do Colaborador (UC02 e UC03).
+  Aprovada e Rejeitada são situações terminais:
+  não há reenvio de viagem rejeitada (US.3 a US.5).
+
+  Em outros documentos: Manter Despesa, Consultar
+  Resumo Financeiro e Visualizar Painel Gerencial.
+end note
+
+@enduml
