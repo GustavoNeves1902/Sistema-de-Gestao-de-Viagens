@@ -33,6 +33,7 @@ services:
       - DB_DATABASE=${POSTGRESQL_DATABASE}
       - DB_USER=${APP_USER}
       - DB_PASSWORD=${APP_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
     depends_on:
       - db
     restart: unless-stopped
