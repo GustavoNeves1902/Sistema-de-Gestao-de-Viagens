@@ -34,6 +34,9 @@ services:
       - DB_USER=${APP_USER}
       - DB_PASSWORD=${APP_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_MATRICULA=${ADMIN_MATRICULA}
+      - ADMIN_NOME=${ADMIN_NOME}
+      - ADMIN_SENHA=${ADMIN_SENHA}
     depends_on:
       - db
     restart: unless-stopped
